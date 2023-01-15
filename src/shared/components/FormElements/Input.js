@@ -23,13 +23,13 @@ const inputReducer = (state, action) => {
 };
 
 const Input = props => {
-  const [inputState, dispatch] = useReducer(inputReducer, {
+  const [inputState, dispatch] = useReducer(inputReducer, { //사용자가 입력한 내용이 유효한지 아닌지도 관리
     value: '',
     isTouched: false,
     isValid: false
   });
 
-  const changeHandler = event => {
+  const changeHandler = event => { //사용자가 뭔가를 입력할 때마다 트리거 , 실행되면 값을 저장하고, 유효성 검사를 실시 
     dispatch({
       type: 'CHANGE',
       val: event.target.value,
@@ -44,7 +44,7 @@ const Input = props => {
   };
 
   const element =
-    props.element === 'input' ? (
+    props.element === 'input' ? ( //props.element가 input의 값을 갖는다면 입력 요소를 저장 : 그렇지 않으면 textarea를 저장
       <input
         id={props.id}
         type={props.type}
@@ -66,7 +66,7 @@ const Input = props => {
   return (
     <div
       className={`form-control ${!inputState.isValid && inputState.isTouched &&
-        'form-control--invalid'}`}
+        'form-control--invalid'}`} // 입력 데이터의 유효성에 따라 추가되는 클래스
     >
       <label htmlFor={props.id}>{props.label}</label>
       {element}

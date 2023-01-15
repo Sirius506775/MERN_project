@@ -5,8 +5,8 @@ import PlaceItem from './PlaceItem';
 import './PlaceList.css';
 
 const PlaceList = props => {
-  if (props.items.length === 0) {
-    return (
+  if (props.items.length === 0) { //props로 받은 items가 없을 때 jsx리턴
+    return ( 
       <div className="place-list center">
         <Card>
           <h2>No places found. Maybe create one?</h2>
@@ -16,7 +16,7 @@ const PlaceList = props => {
     );
   }
 
-  return (
+  return ( //있다면 받은 props를 map()함수를 이용해서 각각의 프로퍼티로 쪼개서 전달 
     <ul className="place-list">
       {props.items.map(place => (
         <PlaceItem

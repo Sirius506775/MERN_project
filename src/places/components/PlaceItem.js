@@ -7,14 +7,14 @@ import Map from '../../shared/components/UIElements/Map';
 import './PlaceItem.css';
 
 const PlaceItem = props => {
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(false); //지도 출력 트리거
 
   const openMapHandler = () => setShowMap(true);
 
   const closeMapHandler = () => setShowMap(false);
 
   return (
-    <React.Fragment>
+    <React.Fragment> 
       <Modal
         show={showMap}
         onCancel={closeMapHandler}
@@ -24,7 +24,7 @@ const PlaceItem = props => {
         footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
       >
         <div className="map-container">
-          <Map center={props.coordinates} zoom={16} />
+          <Map center={props.coordinates} zoom={16} /> 
         </div>
       </Modal>
       <li className="place-item">

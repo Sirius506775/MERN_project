@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import PlaceList from '../components/PlaceList';
 
-const DUMMY_PLACES = [
+const DUMMY_PLACES = [ //주소 더미데이터
   {
     id: 'p1',
     title: 'Empire State Building',
@@ -34,8 +34,8 @@ const DUMMY_PLACES = [
 
 const UserPlaces = () => {
   const userId = useParams().userId;
-  const loadedPlaces = DUMMY_PLACES.filter(place => place.creator === userId);
-  return <PlaceList items={loadedPlaces} />;
+  const loadedPlaces = DUMMY_PLACES.filter(place => place.creator === userId); //등록한 장소데이터의 creator가 userId와 같은 데이터로 필터링
+  return <PlaceList items={loadedPlaces} />; //items이라는 프로퍼티로 PlaceList 컴포넌트로 전달 
 };
 
 export default UserPlaces;
