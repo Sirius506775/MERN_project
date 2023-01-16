@@ -32,8 +32,8 @@ const DUMMY_PLACES = [ //주소 더미데이터
   }
 ];
 
-const UserPlaces = () => {
-  const userId = useParams().userId;
+const UserPlaces = () => { //useParams hook은 콜론(:)과 함께 부호화한 동적 세그먼트, 즉 매개변수에 액세스할 수 있게 해줌
+  const userId = useParams().userId; //부호화된 userId 정보를 액세스
   const loadedPlaces = DUMMY_PLACES.filter(place => place.creator === userId); //등록한 장소데이터의 creator가 userId와 같은 데이터로 필터링
   return <PlaceList items={loadedPlaces} />; //items이라는 프로퍼티로 PlaceList 컴포넌트로 전달 
 };

@@ -7,7 +7,7 @@ const Map = props => {
   
   const { center, zoom } = props;
 
-  useEffect(() => {
+  useEffect(() => { //첫번째 인자는 실행될 함수, 두번째는 의존성 배열
     const map = new window.google.maps.Map(mapRef.current, {
       center: center,
       zoom: zoom

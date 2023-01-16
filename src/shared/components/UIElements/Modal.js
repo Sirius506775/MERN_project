@@ -11,9 +11,9 @@ const ModalOverlay = props => {
       <header className={`modal__header ${props.headerClass}`}>
         <h2>{props.header}</h2>
       </header>
-      <form
+      <form //모달 콘텐츠가 있는 경우 모든 콘텐츠를 form 태그로 감싸면 유용하다.
         onSubmit={
-          props.onSubmit ? props.onSubmit : event => event.preventDefault()
+          props.onSubmit ? props.onSubmit : event => event.preventDefault() //form 제출 막
         }
       >
         <div className={`modal__content ${props.contentClass}`}>
@@ -33,13 +33,13 @@ const Modal = props => {
     <React.Fragment>
       {props.show && <Backdrop onClick={props.onCancel} />}
       <CSSTransition
-        in={props.show}
+        in={props.show} 
         mountOnEnter
         unmountOnExit
         timeout={200}
         classNames="modal"
       >
-        <ModalOverlay {...props} />
+        <ModalOverlay {...props} /> {/*Modal 전달받은 모든 프로퍼티를 오퍼레이에 전달*/}
       </CSSTransition>
     </React.Fragment>
   );
