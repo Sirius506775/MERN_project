@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import Input from "../../shared/components/FormElements/Input";
@@ -40,23 +40,43 @@ const DUMMY_PLACES = [
 ];
 
 const UpdatePlace = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const placeId = useParams().placeId;
 
-  const identifiedPlace = DUMMY_PLACES.find((p) => p.id === placeId);
-
-  const [formState, inputHandler] = useForm(
+  const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
-        value: identifiedPlace.title,
-        isValid: true,
+        value: "",
+        isValid: false,
       },
       description: {
-        value: identifiedPlace.description,
-        isValid: true,
+        value: "",
+        isValid: false,
       },
     },
-    true
-  ); //초깃값은 유효한 상태이여야 한다.
+    false
+  );
+
+  const identifiedPlace = DUMMY_PLACES.find((p) => p.id === placeId); //더미데이터에서 찾은 데이터의 id가 placeId와 같은 것을 할당
+
+  useEffect(() => {
+
+      setFormData(
+        {
+          title: {
+            value: identifiedPlace.title,
+            isValid: true,
+          },
+          description: {
+            value: identifiedPlace.description,
+            isValid: true,
+          },
+        },
+        true
+      );
+    
+    setIsLoading(false); //초기에는 로딩이 되지만, 데이터를 받으면 로딩 안되니까 임시 트리거
+  }, [setFormData, identifiedPlace]);
 
   const placeUpdateSubmitHandler = (e) => {
     e.preventDefault();
@@ -71,6 +91,15 @@ const UpdatePlace = () => {
     );
   }
 
+  if (isLoading) {
+    //formState.inputs.title.value경우에만 렌더링)
+    return (
+      <div className="center">
+          <h2>Loading...</h2>
+      </div>
+    );
+  } // http ...
+
   return (
     <form className="place-form" onSubmit={placeUpdateSubmitHandler}>
       <Input
@@ -82,7 +111,7 @@ const UpdatePlace = () => {
         errorText="Please enter a valid title."
         onInput={inputHandler}
         initialValue={formState.inputs.title.value} //여기서 값과 유효성은 초기화만 한다는 것이 중요
-        initialValid={formState.inputs.title.isValid}
+        initialValid={formState.inputs.title.isValid} //일회성이란 말
       />
       <Input
         id="description"
@@ -100,5 +129,5 @@ const UpdatePlace = () => {
     </form>
   );
 };
-
+//initialValue와 initialValid가 일회성으로 사용되기 때문에 최종값이 있을 때만 렌더링해야한다는 점이 핵심
 export default UpdatePlace;
