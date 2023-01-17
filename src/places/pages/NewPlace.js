@@ -1,77 +1,39 @@
-import React, { useCallback, useReducer } from "react";
-
 import Input from "../../shared/components/FormElements/Input";
 import Button from "../../shared/components/FormElements/Button";
 import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from "../../shared/util/validators";
+import { useForm } from "../../shared/hooks/form-hook";
 import "./PlaceForm.css";
 
-const formReducer = (state, action) => { //state를 선택 관리할 reducer
-  switch (action.type) {
-    case 'INPUT_CHANGE': //dispatch로 받은 action이 'INPUT_CHANGE'이면
-      let formIsValid = true; //helper variable
-      for (const inputId in state.inputs) { //젼역 유효성 검사를 위한 for in
-        if (inputId === action.inputId) { 
-          formIsValid = formIsValid && action.isValid; 
-        } else {
-          formIsValid = formIsValid && state.inputs[inputId].isValid;
-        } 
-      }
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          [action.inputId]: { value: action.value, isValid: action.isValid } //[title]:
-        },
-        isValid: formIsValid
-      };
-    default:
-      return state;
-  }
-};
-
 const NewPlace = () => {
-  const [formState, dispatch] = useReducer(formReducer, { 
-    inputs: { //중첩 객체
-      title: { 
-        value: '',
-        isValid: false
+  const [formState, inputHandler] = useForm(
+    //구조분해할당을 통해 사용자지정 훅에서 정보들은 반환
+    {
+      //useReducer같은 stateFull로직은 사용자 지정 hook내부에 존재
+      title: {
+        value: "",
+        isValid: false,
       },
       description: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       address: {
-        value: '',
-        isValid: false
-      }
+        value: "",
+        isValid: false,
+      },
     },
-    isValid: false
-  });
-
-
-  //! 주의할 점은 Input에서 onInput을 호출하고 정보를 전달할 때마다 titleInputHandler()를 트리거하기 때문에
-  //NewPlace 컴포넌트의 상태를 바꾸거나 리렌더링한다면 새 titleInputHandler 함수가 생성된다. => 무한루프에 빠질 수 있음
-  const inputHandler = useCallback((id, value, isValid) => {
-    dispatch({
-      type: 'INPUT_CHANGE',
-      value: value,
-      isValid: isValid,
-      inputId: id
-    });
-  }, []); //재사용 inputHandler() 함수
-
-  // 함수와 컴포넌트 함수가 리렌더링될 때마다 새로운 함수 객체가 생성되지 않기 위해 useCallback()을 이용해서 저장하여 재사용한다.
-  // 대신 이 함수가 재사용되고 변경되지 않습니다
-
-
+    false
+  );
+  // React는 사용자 지정 훅(useForm) 안에서 상태를 업데이트하면
+  // 사용자 지정 훅을 사용하는 컴포넌트(NewPlace)도 업데이트된다.
   const placeSubmitHandler = (e) => {
     e.preventDefault();
     console.log(formState.inputs); //send this to the backend
-  }
-   
+  };
+
   return (
     <form className="place-form" onSubmit={placeSubmitHandler}>
       <Input
@@ -91,7 +53,7 @@ const NewPlace = () => {
         errorText="Please enter a valid description(at least 5 charactors)."
         onInput={inputHandler}
       />
-            <Input
+      <Input
         id="address"
         element="input"
         label="address"
