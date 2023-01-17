@@ -6,7 +6,7 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from "../../shared/util/validators";
-import "./NewPlace.css";
+import "./PlaceForm.css";
 
 const formReducer = (state, action) => { //state를 선택 관리할 reducer
   switch (action.type) {
@@ -17,7 +17,7 @@ const formReducer = (state, action) => { //state를 선택 관리할 reducer
           formIsValid = formIsValid && action.isValid; 
         } else {
           formIsValid = formIsValid && state.inputs[inputId].isValid;
-        }
+        } 
       }
       return {
         ...state,
@@ -42,6 +42,10 @@ const NewPlace = () => {
       description: {
         value: '',
         isValid: false
+      },
+      address: {
+        value: '',
+        isValid: false
       }
     },
     isValid: false
@@ -50,14 +54,26 @@ const NewPlace = () => {
 
   //! 주의할 점은 Input에서 onInput을 호출하고 정보를 전달할 때마다 titleInputHandler()를 트리거하기 때문에
   //NewPlace 컴포넌트의 상태를 바꾸거나 리렌더링한다면 새 titleInputHandler 함수가 생성된다. => 무한루프에 빠질 수 있음
-  const titleInputHandler = useCallback((id, isValid, value) => {}, []); //전체 양식의 전반적 유효성과 값을 관리
-  const descriptionInputHandler = useCallback((id, isValid, value) => {}, []); //전체 양식의 전반적 유효성과 값을 관리
+  const inputHandler = useCallback((id, value, isValid) => {
+    dispatch({
+      type: 'INPUT_CHANGE',
+      value: value,
+      isValid: isValid,
+      inputId: id
+    });
+  }, []); //재사용 inputHandler() 함수
 
   // 함수와 컴포넌트 함수가 리렌더링될 때마다 새로운 함수 객체가 생성되지 않기 위해 useCallback()을 이용해서 저장하여 재사용한다.
   // 대신 이 함수가 재사용되고 변경되지 않습니다
 
+
+  const placeSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(formState.inputs); //send this to the backend
+  }
+   
   return (
-    <form className="place-form">
+    <form className="place-form" onSubmit={placeSubmitHandler}>
       <Input
         id="title"
         element="input"
@@ -65,7 +81,7 @@ const NewPlace = () => {
         label="Title"
         validators={[VALIDATOR_REQUIRE()]} //검증자 구성 객체가 반환
         errorText="Please enter a valid title."
-        onInput={titleInputHandler}
+        onInput={inputHandler}
       />
       <Input
         id="description"
@@ -73,7 +89,15 @@ const NewPlace = () => {
         label="description"
         validators={[VALIDATOR_MINLENGTH(5)]} //검증자 구성 객체가 반환
         errorText="Please enter a valid description(at least 5 charactors)."
-        onInput={descriptionInputHandler}
+        onInput={inputHandler}
+      />
+            <Input
+        id="address"
+        element="input"
+        label="address"
+        validators={[VALIDATOR_REQUIRE()]} //검증자 구성 객체가 반환
+        errorText="Please enter a valid address."
+        onInput={inputHandler}
       />
       <Button type="submit" disabled={!formState.isValid}>
         ADD PLACE

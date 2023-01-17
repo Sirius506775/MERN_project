@@ -22,12 +22,12 @@ const inputReducer = (state, action) => {
   }
 };
 
-const Input = (props) => {
+const Input = (props) => { //재사용 input 컴포넌트
   const [inputState, dispatch] = useReducer(inputReducer, {
     //사용자가 입력한 내용이 유효한지 아닌지도 관리
-    value: "",
+    value: props.value || '',
     isTouched: false,
-    isValid: false,
+    isValid: props.isValid || false,
   });
 
   const { id, onInput } = props;

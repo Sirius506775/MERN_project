@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-import MainHeader from './MainHeader';
-import NavLinks from './NavLinks';
-import SideDrawer from './SideDrawer';
-import Backdrop from '../UIElements/Backdrop';
-import './MainNavigation.css';
+import MainHeader from "./MainHeader";
+import NavLinks from "./NavLinks";
+import SideDrawer from "./SideDrawer";
+import Backdrop from "../UIElements/Backdrop";
+import "./MainNavigation.css";
 
-const MainNavigation = props => {
-  const [drawerIsOpen, setDrawerIsOpen] = useState(false); // 사이드바 상태관리 
+
+const MainNavigation = (props) => {
+  const [drawerIsOpen, setDrawerIsOpen] = useState(false); // 사이드바 상태관리
 
   const openDrawerHandler = () => {
     setDrawerIsOpen(true);
@@ -19,14 +20,14 @@ const MainNavigation = props => {
   };
 
   return (
-    <React.Fragment> {/* 불필요한 DOM node의 생성을 막기위해 그룹화 */}
-      {drawerIsOpen && <Backdrop onClick={closeDrawerHandler} />} 
+    <React.Fragment>
+      {drawerIsOpen && <Backdrop onClick={closeDrawerHandler} />}
       <SideDrawer show={drawerIsOpen} onClick={closeDrawerHandler}>
         <nav className="main-navigation__drawer-nav">
           <NavLinks />
         </nav>
       </SideDrawer>
-
+      
       <MainHeader>
         <button
           className="main-navigation__menu-btn"

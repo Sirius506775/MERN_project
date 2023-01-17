@@ -39,7 +39,7 @@ const PlaceItem = props => {
           </div>
           <div className="place-item__actions">
             <Button inverse onClick={openMapHandler}>VIEW ON MAP</Button>
-            <Button to={`/places/${props.id}`}>EDIT</Button> {/* 수정화면으로 redirect하는 링*/}
+            <Button to={`/places/${props.id}`}>EDIT</Button> {/* 수정화면으로 redirect하는 링크*/}
             <Button danger>DELETE</Button>
           </div>
         </Card>
