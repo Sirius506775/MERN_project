@@ -9,6 +9,7 @@ import {
 } from "../../shared/util/validators";
 import { useForm } from "../../shared/hooks/form-hook";
 import "./PlaceForm.css";
+import Card from "../../shared/components/UIElements/Card";
 
 const DUMMY_PLACES = [
   {
@@ -26,7 +27,7 @@ const DUMMY_PLACES = [
   },
   {
     id: "p2",
-    title: "Empire State Building",
+    title: "Another Building",
     description: "One of the most famous sky scrapers in the world!",
     imageUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/NYC_Empire_State_Building.jpg/640px-NYC_Empire_State_Building.jpg",
@@ -60,7 +61,8 @@ const UpdatePlace = () => {
   const identifiedPlace = DUMMY_PLACES.find((p) => p.id === placeId); //더미데이터에서 찾은 데이터의 id가 placeId와 같은 것을 할당
 
   useEffect(() => {
-
+    if (identifiedPlace) {
+      //identifiedPlace가 없을 때를 위한 if문
       setFormData(
         {
           title: {
@@ -74,7 +76,7 @@ const UpdatePlace = () => {
         },
         true
       );
-    
+    }
     setIsLoading(false); //초기에는 로딩이 되지만, 데이터를 받으면 로딩 안되니까 임시 트리거
   }, [setFormData, identifiedPlace]);
 
@@ -86,7 +88,9 @@ const UpdatePlace = () => {
   if (!identifiedPlace) {
     return (
       <div className="center">
+        <Card>
         <h2>Could not find place!</h2>
+        </Card>
       </div>
     );
   }
@@ -95,7 +99,9 @@ const UpdatePlace = () => {
     //formState.inputs.title.value경우에만 렌더링)
     return (
       <div className="center">
+        <Card>
           <h2>Loading...</h2>
+        </Card>
       </div>
     );
   } // http ...
