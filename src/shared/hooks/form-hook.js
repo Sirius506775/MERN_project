@@ -6,7 +6,9 @@ const formReducer = (state, action) => {
     case "INPUT_CHANGE": //dispatch로 받은 action이 'INPUT_CHANGE'이면
       let formIsValid = true; //helper variable
       for (const inputId in state.inputs) {
-        //젼역 유효성 검사를 위한 for in
+        if (!state.inputs[inputId]) { //undefind라면
+          continue;
+        }
         if (inputId === action.inputId) {
           formIsValid = formIsValid && action.isValid;
         } else {
