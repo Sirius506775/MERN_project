@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import Card from "../../shared/components/UIElements/Card";
 import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
 import Map from "../../shared/components/UIElements/Map";
 import "./PlaceItem.css";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const PlaceItem = (props) => {
+  const auth = useContext(AuthContext);
+
   const [showMap, setShowMap] = useState(false); //지도 출력 트리거
+
   const [showConfirmModal, setShowConfirmModal] = useState(false); 
 
   const openMapHandler = () => setShowMap(true);
@@ -73,9 +77,13 @@ const PlaceItem = (props) => {
             <Button inverse onClick={openMapHandler}>
               VIEW ON MAP
             </Button>
-            <Button to={`/places/${props.id}`}>EDIT</Button>{" "}
-            {/* 수정화면으로 redirect하는 링크*/}
-            <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
+            {auth.isLoggedIn && 
+              <React.Fragment>
+                <Button to={`/places/${props.id}`}>EDIT</Button>
+                <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
+              </React.Fragment>
+            }
+          
           </div>
         </Card>
       </li>
