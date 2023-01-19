@@ -22,7 +22,7 @@ const App = () => {
   }, []);
 
   const logout = useCallback(() => {
-    setIsLoginMode(true);
+    setIsLoginMode(false);
   }, []);
 
   let routes;
